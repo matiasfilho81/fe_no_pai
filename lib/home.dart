@@ -21,81 +21,108 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              color: Colors.yellow,
-              width: 50.0,
-              height: 50.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  color: Colors.purple,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-                Container(
-                  color: Colors.indigo,
-                  width: 100,
-                  height: 100,
-                  child: Center(
-                    child: Container(
-                      color: Colors.white,
-                      width: 50,
-                      height: 50,
-                      child: Center(child: Text("Robo")),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.purple,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-
-                // Text(
-                //   'You have pushed the button this many times:',
-                // ),
-                // Text(
-                //   '$_counter',
-                //   style: Theme.of(context).textTheme.headline4,
-                // ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  color: Colors.pink,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  color: Colors.green,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-              ],
-            ),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
+            robo(),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ),
     );
   }
+}
+
+Widget robo() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisSize: MainAxisSize.max,
+    children: [
+      cabeca(),
+      corpo(),
+      pernas(),
+    ],
+  );
+}
+
+Widget cabeca() {
+  return Container(
+    color: Colors.yellow,
+    width: 50.0,
+    height: 50.0,
+  );
+}
+
+Widget corpo() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Container(
+        color: Colors.purple,
+        width: 50.0,
+        height: 50.0,
+      ),
+      Container(
+        color: Colors.indigo,
+        width: 100,
+        height: 100,
+        child: Center(
+          child: Container(
+            color: Colors.white,
+            width: 50,
+            height: 50,
+            child: Center(child: Text("Robo")),
+          ),
+        ),
+      ),
+      Container(
+        color: Colors.purple,
+        width: 50.0,
+        height: 50.0,
+      ),
+
+      // Text(
+      //   'You have pushed the button this many times:',
+      // ),
+      // Text(
+      //   '$_counter',
+      //   style: Theme.of(context).textTheme.headline4,
+      // ),
+    ],
+  );
+}
+
+Widget pernas() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        color: Colors.pink,
+        width: 50.0,
+        height: 50.0,
+      ),
+      SizedBox(
+        width: 20,
+      ),
+      Container(
+        color: Colors.green,
+        width: 50.0,
+        height: 50.0,
+      ),
+    ],
+  );
 }
