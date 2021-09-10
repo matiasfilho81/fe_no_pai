@@ -46,6 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.indigo,
                   width: 100,
                   height: 100,
+                  child: Center(
+                    child: Container(
+                      color: Colors.white,
+                      width: 50,
+                      height: 50,
+                      child: Center(child: Text("Robo")),
+                    ),
+                  ),
                 ),
                 Container(
                   color: Colors.purple,
