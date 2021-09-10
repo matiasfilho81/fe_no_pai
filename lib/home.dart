@@ -21,19 +21,64 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              color: Colors.yellow,
+              width: 50.0,
+              height: 50.0,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  color: Colors.purple,
+                  width: 50.0,
+                  height: 50.0,
+                ),
+                Container(
+                  color: Colors.indigo,
+                  width: 100,
+                  height: 100,
+                ),
+                Container(
+                  color: Colors.purple,
+                  width: 50.0,
+                  height: 50.0,
+                ),
+
+                // Text(
+                //   'You have pushed the button this many times:',
+                // ),
+                // Text(
+                //   '$_counter',
+                //   style: Theme.of(context).textTheme.headline4,
+                // ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  color: Colors.pink,
+                  width: 50.0,
+                  height: 50.0,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  color: Colors.green,
+                  width: 50.0,
+                  height: 50.0,
+                ),
+              ],
             ),
           ],
         ),
