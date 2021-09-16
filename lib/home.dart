@@ -10,7 +10,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
 
   // void _incrementCounter() {
   //   setState(() {
@@ -21,30 +21,36 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-            robo(),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // robo(),
+          bandeiraBelgica()
+        ],
       ),
     );
   }
+}
+
+Widget bandeiraBelgica() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      faixa(cor: Colors.black),
+      faixa(cor: Colors.yellow),
+      faixa(cor: Colors.red),
+    ],
+  );
+}
+
+Widget faixa({Color cor}) {
+  final double h = 250.0;
+  final double l = 120.0;
+  return Container(
+    height: h,
+    width: l,
+    color: cor,
+  );
 }
 
 Widget robo() {

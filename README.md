@@ -1,5 +1,5 @@
 # Descrição
-Projeto desenvolvido me conjunto com turma de ADS da USF do 4 período.
+Projeto desenvolvido em conjunto com turma de ADS da USF do 4 período.
 
 # Autores
 Professor José Matias Lemes Filho e Turma ADS2021-2 Semestre.

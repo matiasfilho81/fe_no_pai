@@ -10,7 +10,7 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
-  int _counter = 0;
+  // int _counter = 0;
 
   // void _incrementCounter() {
   //   setState(() {
