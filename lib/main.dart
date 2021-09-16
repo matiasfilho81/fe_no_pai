@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'pages/home.dart';
 // import 'login.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Fé no Pai'), //MyLogin(title: 'Fé no Pai'),
+      home: Home(title: 'Fé no Pai'), //MyLogin(title: 'Fé no Pai'),
     );
   }
 }
