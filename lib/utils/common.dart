@@ -13,10 +13,26 @@ double setHeight(double value) {
   return value * AppConsts.heightPercentage;
 }
 
-// colocar depois do  Widget build(BuildContext context)
+Widget faixa({Color cor}) {
+  final double h = setWidth(200.0);
+  final double l = setHeight(100.0);
+  return Container(
+    height: h,
+    width: l,
+    color: cor,
+  );
+}
 
-// AppConsts.setWidhtSize(MediaQuery.of(context).size.width);
-// AppConsts.setHeightSize(MediaQuery.of(context).size.height);
+Widget bandeiraBelgica() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      faixa(cor: AppConsts.blackBasic2),
+      faixa(cor: AppConsts.yellowBasic2),
+      faixa(cor: AppConsts.redBasic2),
+    ],
+  );
+}
 
 Widget botao(
     {String texto,
@@ -35,26 +51,23 @@ Widget botao(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConsts.radiusBotton)),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundColor: AppConsts.backgroundColor,
-              maxRadius: setHeight(16),
-              child: Image.asset(
-                pathImage,
-                height: setHeight(18),
-                color: AppConsts.backgroundColor,
-              ),
-            ),
+            // CircleAvatar(
+            //   backgroundColor: AppConsts.backgroundColor,
+            //   maxRadius: setHeight(16),
+            //   child: Image.asset(
+            //     pathImage,
+            //     height: setHeight(18),
+            //     color: AppConsts.backgroundColor,
+            //   ),
+            // ),
             SizedBox(width: setWidth(10.0)),
-            Container(
-              constraints: BoxConstraints(maxWidth: setWidth(maxWidth - 10 - 32 - 10)),
-              child: Text(
-                texto.toUpperCase(),
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: disabled ? AppConsts.offText : AppConsts.onText,
-                  fontSize: AppConsts.fontSize10,
-                  fontWeight: FontWeight.w700,
-                ),
+            Text(
+              texto.toUpperCase(),
+              // overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: disabled ? AppConsts.offText : AppConsts.onText,
+                fontSize: AppConsts.fontSize16,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],

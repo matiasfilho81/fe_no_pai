@@ -1,7 +1,6 @@
+import 'package:fe_no_pai/pages/calendar.dart';
+import 'package:fe_no_pai/pages/login.dart';
 import 'package:flutter/material.dart';
-
-import 'pages/home.dart';
-// import 'login.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +15,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(title: 'Fé no Pai'), //MyLogin(title: 'Fé no Pai'),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/calendar': (context) => CalendarPage(),
+        // LoginPage.tag: (context) => LoginPage(),
+      },
     );
   }
 }

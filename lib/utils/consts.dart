@@ -24,11 +24,12 @@ class AppConsts {
     widthPercentage = widthSize / xdWidhtSize;
   }
 
-  static double radiusBotton = 50;
+  static double radiusBotton = 50.0;
+  static double topHeight = 10.0;
 
   // Back Ground Colors
 
-  static Color backgroundColor = const Color(0xff484848);
+  static Color backgroundColor = const Color(0x1f00ff00);
   static Color appbarBackgroundColor = const Color(0xff484848);
 
   // Cores primárias
@@ -47,18 +48,19 @@ class AppConsts {
   static Color offColor = const Color(0xff484848);
   static Color onBottom = const Color(0xffffffdd);
   static Color offBottom = const Color(0xffffdddd);
-  static Color onText = const Color(0xffffffff);
+  static Color onText = const Color(0xff000000);
   static Color offText = const Color(0xffffffdd);
 
   static double fontSize08 = setWidth(8.0);
   static double fontSize09 = setWidth(9.0);
   static double fontSize10 = setWidth(10.0);
+  static double fontSize16 = setWidth(16.0);
+  static double fontSize18 = setWidth(18.0);
+  static double fontSize24 = setWidth(24.0);
 
   static TextStyle styleTitle = TextStyle(
-    color: AppConsts.blackBasic2,
+    // color: AppConsts.onText,
     fontWeight: FontWeight.w600,
-    fontSize: AppConsts.fontSize10,
+    fontSize: AppConsts.fontSize24,
   );
-
-  static double topHeight = 10.0;
 }

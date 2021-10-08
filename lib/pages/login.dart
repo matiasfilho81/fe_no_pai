@@ -1,44 +1,49 @@
+import 'package:fe_no_pai/pages/calendar.dart';
+import 'package:fe_no_pai/utils/common.dart';
+import 'package:fe_no_pai/utils/consts.dart';
 import 'package:flutter/material.dart';
 
-class MyLogin extends StatefulWidget {
-  MyLogin({Key key, this.title}) : super(key: key);
-
-  final String title;
+class LoginPage extends StatefulWidget {
+  static String tag = '/login';
+  const LoginPage({Key key}) : super(key: key);
 
   @override
-  _MyLoginState createState() => _MyLoginState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _MyLoginState extends State<MyLogin> {
-  // int _counter = 0;
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
-
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    AppConsts.setWidhtSize(MediaQuery.of(context).size.width);
+    AppConsts.setHeightSize(MediaQuery.of(context).size.height);
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Text("Seu e-mail"),
-            Text("Sua senha"),
-          ],
-        ),
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ),
+      body: corpo(context),
     );
   }
+}
+
+Widget corpo(BuildContext context) {
+  return Container(
+    color: AppConsts.backgroundColor,
+    child: Center(
+      child: Container(
+        color: AppConsts.offBottom,
+        width: setWidth(200.0),
+        height: setHeight(80.0),
+        child: OutlinedButton.icon(
+            onPressed: () {
+              print("apertei o botao");
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => CalendarPage(
+                    nome: "Diego",
+                  ),
+                ),
+              );
+            },
+            icon: Icon(Icons.login, size: setHeight(18.0)),
+            label: Text("Login")),
+      ),
+    ),
+  );
 }
