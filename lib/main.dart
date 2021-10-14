@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/login',
+      initialRoute: '/calendar',
       routes: {
         '/login': (context) => LoginPage(),
         '/calendar': (context) => CalendarPage(),

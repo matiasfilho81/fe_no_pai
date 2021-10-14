@@ -27,6 +27,9 @@ class AppConsts {
   static double radiusBotton = 50.0;
   static double topHeight = 10.0;
 
+// Tamanho das letras
+  static double fontSize12 = setWidth(12.0);
+
   // Back Ground Colors
 
   static Color backgroundColor = const Color(0x1f00ff00);
@@ -62,5 +65,11 @@ class AppConsts {
     // color: AppConsts.onText,
     fontWeight: FontWeight.w600,
     fontSize: AppConsts.fontSize24,
+  );
+
+  static TextStyle textLabel = TextStyle(
+    color: Colors.black,
+    fontSize: AppConsts.fontSize12,
+    height: 1.5,
   );
 }

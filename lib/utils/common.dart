@@ -34,12 +34,7 @@ Widget bandeiraBelgica() {
   );
 }
 
-Widget botao(
-    {String texto,
-    String pathImage,
-    Function action,
-    double maxWidth = 344,
-    bool disabled = false}) {
+Widget botao({String texto, Function action, double maxWidth = 344, bool disabled = false}) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: setHeight(5.0)),
     child: Container(
@@ -50,20 +45,10 @@ Widget botao(
         color: AppConsts.backgroundColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConsts.radiusBotton)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // CircleAvatar(
-            //   backgroundColor: AppConsts.backgroundColor,
-            //   maxRadius: setHeight(16),
-            //   child: Image.asset(
-            //     pathImage,
-            //     height: setHeight(18),
-            //     color: AppConsts.backgroundColor,
-            //   ),
-            // ),
-            SizedBox(width: setWidth(10.0)),
             Text(
               texto.toUpperCase(),
-              // overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: disabled ? AppConsts.offText : AppConsts.onText,
                 fontSize: AppConsts.fontSize16,
@@ -76,3 +61,23 @@ Widget botao(
     ),
   );
 }
+
+Widget labelGenerico(String string, {Color textColor}) {
+  TextStyle textStyle =
+      ((textColor == null) ? AppConsts.textLabel : AppConsts.textLabel.copyWith(color: textColor));
+  return Padding(
+    padding: EdgeInsets.only(top: setHeight(16)),
+    child: Text(
+      string.toUpperCase(),
+      style: textStyle,
+    ),
+  );
+}
+
+// String formatDateToLocale(DateTime value) {
+//   if (value != null) {
+//     return DateFormat.yMMMMd("pt_BR").format(value);
+//   } else {
+//     return " - ";
+//   }
+// }

@@ -35,9 +35,7 @@ Widget corpo(BuildContext context) {
               print("apertei o botao");
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => CalendarPage(
-                    nome: "Diego",
-                  ),
+                  builder: (context) => CalendarPage(),
                 ),
               );
             },
