@@ -61,6 +61,8 @@ class AppConsts {
   static double fontSize18 = setWidth(18.0);
   static double fontSize24 = setWidth(24.0);
 
+  static Color fundoTextFormField = const Color(0xffffffdd);
+
   static TextStyle styleTitle = TextStyle(
     // color: AppConsts.onText,
     fontWeight: FontWeight.w600,

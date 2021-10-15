@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'consts.dart';
 
@@ -74,10 +75,20 @@ Widget labelGenerico(String string, {Color textColor}) {
   );
 }
 
-// String formatDateToLocale(DateTime value) {
-//   if (value != null) {
-//     return DateFormat.yMMMMd("pt_BR").format(value);
-//   } else {
-//     return " - ";
-//   }
-// }
+String formatDateToLocale(DateTime value) {
+  if (value != null) {
+    return DateFormat.yMMMMd("pt_BR").format(value);
+  } else {
+    return " - ";
+  }
+}
+
+Widget quatro(Widget image) {
+  return Container(
+    decoration: BoxDecoration(
+      color: AppConsts.fundoTextFormField,
+      borderRadius: BorderRadius.circular(AppConsts.radiusBotton),
+    ),
+    child: image,
+  );
+}
