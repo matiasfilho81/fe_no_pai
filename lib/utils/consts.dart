@@ -24,7 +24,7 @@ class AppConsts {
     widthPercentage = widthSize / xdWidhtSize;
   }
 
-  static double radiusBotton = 50.0;
+  static double radiusBotton = 10.0;
   static double topHeight = 10.0;
 
 // Tamanho das letras

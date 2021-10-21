@@ -1,9 +1,10 @@
-import 'package:fe_no_pai/pages/calendar.dart';
+import 'package:fe_no_pai/pages/form.dart';
 import 'package:fe_no_pai/pages/login.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,10 +16,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/calendar',
+      initialRoute: '/',
       routes: {
-        '/login': (context) => LoginPage(),
-        '/calendar': (context) => CalendarPage(),
+        '/': (context) => LoginPage(),
+        '/form': (context) => FormPage(),
         // LoginPage.tag: (context) => LoginPage(),
       },
     );

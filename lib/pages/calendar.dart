@@ -1,222 +1,351 @@
+import 'package:fe_no_pai/pages/form.dart';
 import 'package:fe_no_pai/utils/common.dart';
 import 'package:fe_no_pai/utils/consts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:search_choices/search_choices.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+// Example holidays
+final Map<DateTime, List> _holidays = {
+  DateTime(2020, 1, 1): ['New Year\'s Day'],
+  DateTime(2020, 1, 6): ['Epiphany'],
+  DateTime(2020, 2, 14): ['Valentine\'s Day'],
+  DateTime(2020, 4, 21): ['Easter Sunday'],
+  DateTime(2020, 4, 22): ['Easter Monday'],
+};
 
 class CalendarPage extends StatefulWidget {
-  static String tag = '/calendar';
-  const CalendarPage({Key key}) : super(key: key);
+  CalendarPage({Key key, this.title}) : super(key: key);
+
+  final String title;
 
   @override
   _CalendarPageState createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
-  final TextEditingController _nameCtrl = TextEditingController();
-  final TextEditingController _sexoCtrl = TextEditingController();
-  final MaskedTextController _telemovelCtrl = MaskedTextController(mask: '(00) 00000-0000');
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  DateTime _birthDate;
-  List _sexoList;
+class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
+  Map<DateTime, List> _events;
+  List _selectedEvents;
+  AnimationController _animationController;
+  CalendarController _calendarController;
 
   @override
   void initState() {
-    _sexoList = Sexo.map.entries.map((e) => Sexo(e.key, e.value)).toList();
-    initializeDateFormatting();
-    _birthDate = DateTime.now();
     super.initState();
+    final _selectedDay = DateTime.now();
+
+    _events = {
+      _selectedDay.subtract(Duration(days: 30)): ['Event A0', 'Event B0', 'Event C0'],
+      _selectedDay.subtract(Duration(days: 27)): ['Event A1'],
+      _selectedDay.subtract(Duration(days: 20)): ['Event A2', 'Event B2', 'Event C2', 'Event D2'],
+      _selectedDay.subtract(Duration(days: 16)): ['Event A3', 'Event B3'],
+      _selectedDay.subtract(Duration(days: 10)): ['Event A4', 'Event B4', 'Event C4'],
+      _selectedDay.subtract(Duration(days: 4)): ['Event A5', 'Event B5', 'Event C5'],
+      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
+      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
+      _selectedDay.add(Duration(days: 1)): ['Event A8', 'Event B8', 'Event C8', 'Event D8'],
+      _selectedDay.add(Duration(days: 3)): Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
+      _selectedDay.add(Duration(days: 7)): ['Event A10', 'Event B10', 'Event C10'],
+      _selectedDay.add(Duration(days: 11)): ['Event A11', 'Event B11'],
+      _selectedDay.add(Duration(days: 17)): ['Event A12', 'Event B12', 'Event C12', 'Event D12'],
+      _selectedDay.add(Duration(days: 22)): ['Event A13', 'Event B13'],
+      _selectedDay.add(Duration(days: 26)): ['Event A14', 'Event B14', 'Event C14'],
+    };
+
+    _selectedEvents = _events[_selectedDay] ?? [];
+    _calendarController = CalendarController();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _calendarController.dispose();
+    super.dispose();
+  }
+
+  void _onDaySelected(DateTime day, List events, List holidays) {
+    print('CALLBACK: _onDaySelected');
+    setState(() {
+      _selectedEvents = events;
+    });
+  }
+
+  void _onVisibleDaysChanged(DateTime first, DateTime last, CalendarFormat format) {
+    print('CALLBACK: _onVisibleDaysChanged');
+  }
+
+  void _onCalendarCreated(DateTime first, DateTime last, CalendarFormat format) {
+    print('CALLBACK: _onCalendarCreated');
   }
 
   @override
   Widget build(BuildContext context) {
-    AppConsts.setWidhtSize(MediaQuery.of(context).size.width);
-    AppConsts.setHeightSize(MediaQuery.of(context).size.height);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Perfil"),
+        backgroundColor: AppConsts.backgroundColor,
+        title: Text(widget.title),
       ),
-      body: corpo(),
-    );
-  }
-
-  Widget corpo() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: setWidth(24), vertical: setHeight(24)),
-      color: AppConsts.backgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _formulario(),
-          _botoes(),
-        ],
-      ),
-    );
-  }
-
-  Widget _formulario() {
-    return _embrulha(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          labelGenerico("nome"),
-          quatro(_nameContainer()),
-          labelGenerico("sexo"),
-          quatro(_choiceSexoList()),
-          labelGenerico("telefone"),
-          quatro(_telefoneContainer()),
-          labelGenerico("data de nascimento"),
-          quatro(_dateContainer()),
-        ],
+      body: Container(
+        color: AppConsts.backgroundColor,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            // Switch out 2 lines below to play with TableCalendar's settings
+            //-----------------------
+            _buildTableCalendar(),
+            // _buildTableCalendarWithBuilders(),
+            const SizedBox(height: 8.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: setWidth(16.0)),
+              child: _buildButtons(),
+            ),
+            const SizedBox(height: 8.0),
+            Expanded(child: _buildEventList()),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _embrulha(Widget _corpo) {
-    return Form(
-      key: _formKey,
-      child: Flexible(
-        child: SingleChildScrollView(
-          child: Container(
-            child: _corpo,
+  // Simple TableCalendar configuration (using Styles)
+  Widget _buildTableCalendar() {
+    return TableCalendar(
+      calendarController: _calendarController,
+      events: _events,
+      holidays: _holidays,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      calendarStyle: CalendarStyle(
+        selectedColor: Colors.deepOrange[400],
+        todayColor: Colors.deepOrange[200],
+        markersColor: Colors.brown[700],
+        outsideDaysVisible: false,
+      ),
+      headerStyle: HeaderStyle(
+        formatButtonTextStyle: TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
+        formatButtonDecoration: BoxDecoration(
+          color: Colors.deepOrange[400],
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
+      onDaySelected: _onDaySelected,
+      onVisibleDaysChanged: _onVisibleDaysChanged,
+      onCalendarCreated: _onCalendarCreated,
+    );
+  }
+
+  // More advanced TableCalendar configuration (using Builders & Styles)
+  Widget _buildTableCalendarWithBuilders() {
+    return TableCalendar(
+      locale: 'en_US',
+      calendarController: _calendarController,
+      events: _events,
+      holidays: _holidays,
+      initialCalendarFormat: CalendarFormat.month,
+      formatAnimation: FormatAnimation.slide,
+      startingDayOfWeek: StartingDayOfWeek.sunday,
+      availableGestures: AvailableGestures.all,
+      availableCalendarFormats: const {
+        CalendarFormat.month: '',
+        CalendarFormat.week: '',
+      },
+      calendarStyle: CalendarStyle(
+        outsideDaysVisible: false,
+        weekendStyle: TextStyle().copyWith(color: Colors.blue[800]),
+        holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
+      ),
+      daysOfWeekStyle: DaysOfWeekStyle(
+        weekendStyle: TextStyle().copyWith(color: Colors.blue[600]),
+      ),
+      headerStyle: HeaderStyle(
+        centerHeaderTitle: true,
+        formatButtonVisible: false,
+      ),
+      builders: CalendarBuilders(
+        selectedDayBuilder: (context, date, _) {
+          return FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+            child: Container(
+              margin: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(top: 5.0, left: 6.0),
+              color: Colors.deepOrange[300],
+              width: 100,
+              height: 100,
+              child: Text(
+                '${date.day}',
+                style: TextStyle().copyWith(fontSize: 16.0),
+              ),
+            ),
+          );
+        },
+        todayDayBuilder: (context, date, _) {
+          return Container(
+            margin: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.only(top: 5.0, left: 6.0),
+            color: Colors.amber[400],
+            width: 100,
+            height: 100,
+            child: Text(
+              '${date.day}',
+              style: TextStyle().copyWith(fontSize: 16.0),
+            ),
+          );
+        },
+        markersBuilder: (context, date, events, holidays) {
+          final children = <Widget>[];
+
+          if (events.isNotEmpty) {
+            children.add(
+              Positioned(
+                right: 1,
+                bottom: 1,
+                child: _buildEventsMarker(date, events),
+              ),
+            );
+          }
+
+          if (holidays.isNotEmpty) {
+            children.add(
+              Positioned(
+                right: -2,
+                top: -2,
+                child: _buildHolidaysMarker(),
+              ),
+            );
+          }
+
+          return children;
+        },
+      ),
+      onDaySelected: (date, events, holidays) {
+        _onDaySelected(date, events, holidays);
+        _animationController.forward(from: 0.0);
+      },
+      onVisibleDaysChanged: _onVisibleDaysChanged,
+      onCalendarCreated: _onCalendarCreated,
+    );
+  }
+
+  Widget _buildEventsMarker(DateTime date, List events) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: _calendarController.isSelected(date)
+            ? Colors.brown[500]
+            : _calendarController.isToday(date)
+                ? Colors.brown[300]
+                : Colors.blue[400],
+      ),
+      width: 16.0,
+      height: 16.0,
+      child: Center(
+        child: Text(
+          '${events.length}',
+          style: TextStyle().copyWith(
+            color: Colors.white,
+            fontSize: 12.0,
           ),
         ),
       ),
     );
   }
 
-  Widget _botoes() {
+  Widget _buildHolidaysMarker() {
+    return Icon(
+      Icons.add_box,
+      size: 20.0,
+      color: Colors.blueGrey[800],
+    );
+  }
+
+  Widget _buildButtons() {
+    final dateTime = _events.keys.elementAt(_events.length - 2);
+
     return Column(
-      children: [
-        botao(texto: "Salvar", action: () => print("hora de salvar!")),
-        // botao(texto: "Enviar", action: () => print("hora de enviar!")),
-      ],
-    );
-  }
-
-  Widget _choiceSexoList() {
-    return SearchChoices.single(
-      dialogBox: true,
-      displayClearIcon: false,
-      closeButton: null,
-      isExpanded: true,
-      underline: Container(
-        height: 1,
-        color: Colors.white,
-        margin: EdgeInsets.symmetric(horizontal: setWidth(14)),
-      ),
-      items: _sexoList.map<DropdownMenuItem<String>>((item) {
-        return DropdownMenuItem<String>(
-          value: item.code + ' - ' + item.description,
-          child: Text(item.description),
-        );
-      }).toList(),
-      onChanged: (String value) {
-        setState(() {
-          _sexoCtrl.text = value;
-        });
-      },
-      searchHint: "Informe um motivo",
-      value: _sexoCtrl.text,
-    );
-  }
-
-  Widget _telefoneContainer() {
-    return TextFormField(
-      controller: _telemovelCtrl,
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  Widget _nameContainer() {
-    return TextFormField(
-      textCapitalization: TextCapitalization.words,
-      textInputAction: TextInputAction.next,
-      controller: _nameCtrl,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-      ),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z.âãáÃÂÁõôóÕÔÓêÊéÉíÍúÚÇç&\ ]")),
-      ],
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Precisamos de um nome para a conta.';
-        } else if (value.length < 5) {
-          return 'Precisamos de no mínimo 5 caracteres.';
-        }
-        return null;
-      },
-      // onChanged: (value) {
-      //   print(_nameCtrl.text);
-      // },
-    );
-  }
-
-  Widget _dateContainer() {
-    // DateTime max = DateTime.now().subtract(Duration(days: 365 * 18));
-    return GestureDetector(
-      child: Container(
-        height: setHeight(40),
-        decoration: BoxDecoration(
-            // border: AppConsts.borda,
-            ),
-        child: Row(
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(formatDateToLocale(_birthDate)),
-            Icon(Icons.arrow_drop_down),
+            botao(
+              texto: 'Month',
+              action: () {
+                setState(() {
+                  _calendarController.setCalendarFormat(CalendarFormat.month);
+                });
+              },
+            ),
+            botao(
+              texto: '2 weeks',
+              action: () {
+                setState(() {
+                  _calendarController.setCalendarFormat(CalendarFormat.twoWeeks);
+                });
+              },
+            ),
+            botao(
+              texto: 'Week',
+              action: () {
+                setState(() {
+                  _calendarController.setCalendarFormat(CalendarFormat.week);
+                });
+              },
+            ),
           ],
         ),
-      ),
-      onTap: () {
-        DatePicker.showDatePicker(
-          context,
-          // minTime: DateTime.now().subtract(Duration(days: 365 * 140)),
-          // maxTime: max,
-          locale: LocaleType.pt,
-          currentTime: _birthDate,
-          onConfirm: (date) {
-            setState(() {
-              _birthDate = date;
-            });
-          },
-          theme: DatePickerTheme(
-              // cancelStyle: TextStyle(color: AppConsts.textSecondary),
-              // doneStyle: TextStyle(color: AppConsts.textSecondary),
-              ),
-        );
-      },
+        const SizedBox(height: 8.0),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            botao(
+              texto: 'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}',
+              action: () {
+                _calendarController.setSelectedDay(
+                  DateTime(dateTime.year, dateTime.month, dateTime.day),
+                  runCallback: true,
+                );
+              },
+            ),
+            botao(
+              texto: 'ADD Event',
+              action: () {
+                setState(() {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => FormPage(),
+                    ),
+                  );
+                });
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
-}
 
-class Sexo {
-  String code;
-  String description;
-  Sexo(this.code, this.description);
-
-  static Map<String, String> map = {
-    'male': 'Masculino',
-    'female': 'Fêmea',
-    'other': 'Ignorado',
-  };
+  Widget _buildEventList() {
+    return ListView(
+      children: _selectedEvents
+          .map((event) => Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.8),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                child: ListTile(
+                  title: Text(event.toString()),
+                  onTap: () => print('$event tapped!'),
+                ),
+              ))
+          .toList(),
+    );
+  }
 }

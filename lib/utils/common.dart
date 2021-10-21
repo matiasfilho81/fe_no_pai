@@ -44,7 +44,13 @@ Widget botao({String texto, Function action, double maxWidth = 344, bool disable
         onPressed: () => disabled ? Container() : action(),
         padding: EdgeInsets.symmetric(horizontal: setHeight(5.0)),
         color: AppConsts.backgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConsts.radiusBotton)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(AppConsts.radiusBotton),
+            topLeft: Radius.circular(AppConsts.radiusBotton),
+            bottomRight: Radius.circular(AppConsts.radiusBotton),
+          ),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
